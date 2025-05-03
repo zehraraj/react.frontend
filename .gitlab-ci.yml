@@ -1,0 +1,23 @@
+image: node:12.10
+
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+pages:
+  cache:
+    paths:
+    - node_modules/
+
+  script:
+  - npm install
+  - PUBLIC_URL=https://hubshub.gitlab.io/react.frontend/ npm run build
+  - mv ./public ./public-old
+  - mv ./build ./public
+
+  artifacts:
+    paths:
+    - public
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
